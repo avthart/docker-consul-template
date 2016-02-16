@@ -1,14 +1,19 @@
 FROM gliderlabs/alpine
 MAINTAINER Albert van t Hart <avthart@gmail.com>
 
-ADD https://github.com/hashicorp/consul-template/releases/download/v0.8.0/consul-template_0.8.0_linux_amd64.tar.gz /tmp/consul-template.tgz
-RUN cd /bin && gzip -dc /tmp/consul-template.tgz | tar -xf - && rm /tmp/consul-template.tgz && mv /bin/consul-template_0.8.0_linux_amd64/consul-template /bin/consul-template && rmdir /bin/consul-template_0.8.0_linux_amd64
-
-ADD https://get.docker.com/builds/Linux/x86_64/docker-latest /bin/docker
-RUN chmod +x /bin/docker
-
-RUN apk --update add curl bash
-
+ENV CONSUL_TEMPLATE_VERSION 0.12.2
 ENV DOCKER_HOST unix:///tmp/docker.sock
+
+ADD https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS /tmp/
+ADD https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip /tmp/
+ADD https://get.docker.com/builds/Linux/x86_64/docker-latest /bin/docker
+
+RUN cd /tmp && \ 
+    sha256sum -c consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS 2>&1 | grep OK && \
+    unzip consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip && \ 
+    mv consul-template /bin/consul-template && \
+    rm -rf /tmp && \
+    chmod +x /bin/docker && \
+    apk --update add curl bash
 
 ENTRYPOINT ["/bin/consul-template"]
