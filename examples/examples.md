@@ -4,7 +4,7 @@ For all examples you need to run consul and registrator. Make sure you have boot
 Run consul:
 
 ```
-$ docker run --name consul -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -advertise 192.168.59.103 -bootstrap
+$ docker run --name consul -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 gliderlabs/consul-server -advertise 192.168.59.103 -bootstrap
 ```
 
 Run registrator:
