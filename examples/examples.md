@@ -14,7 +14,7 @@ $ docker run \
   --name registrator \
   -d \
   -v /var/run/docker.sock:/tmp/docker.sock \
-  -h $HOSTNAME progrium/registrator consul://192.168.59.103:8500
+  -h $HOSTNAME gliderlabs/registrator consul://192.168.59.103:8500
 ```
 
 nginx
