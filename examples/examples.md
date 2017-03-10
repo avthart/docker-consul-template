@@ -4,7 +4,7 @@ For all examples you need to run consul and registrator. Make sure you have boot
 Run consul:
 
 ```
-$ docker run --name consul -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 gliderlabs/consul-server -advertise 192.168.59.103 -bootstrap
+$ docker run --name consul -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 gliderlabs/consul-server -advertise 127.0.0.1 -bootstrap
 ```
 
 Run registrator:
@@ -14,7 +14,7 @@ $ docker run \
   --name registrator \
   -d \
   -v /var/run/docker.sock:/tmp/docker.sock \
-  -h $HOSTNAME gliderlabs/registrator consul://192.168.59.103:8500
+  -h $HOSTNAME gliderlabs/registrator consul://127.0.0.1:8500
 ```
 
 nginx
@@ -22,7 +22,7 @@ nginx
 Run nginx container which will route requests to the hello-world container:
 
 ```
-$ docker run --name nginx -d -p 80:80 -v /etc/nginx/sites-available dockerfile/nginx
+$ docker run --name nginx -d -p 80:80 -v /etc/nginx/sites-available nginx
 ```
 
 Run consul template container which generates nginx configuration (modify the location of the nginx.ctml below):
@@ -36,7 +36,7 @@ $ docker run \
  -v /Users/albertvth/Development/github/docker-consul-template/examples/nginx.ctml:/tmp/nginx.ctmpl \
  --volumes-from nginx \
  avthart/consul-template \
- -consul=192.168.59.103:8500 -wait=5s -template="/tmp/nginx.ctmpl:/etc/nginx/sites-available/default:/bin/docker kill -s HUP nginx"
+ -consul=127.0.0.1:8500 -wait=5s -template="/tmp/nginx.ctmpl:/etc/nginx/sites-available/default:/bin/docker kill -s HUP nginx"
  ```
 
  Start a hello-world container:
@@ -48,7 +48,7 @@ $ docker run \
 Check if you can retrieve the hello-world page:
 
 ```
-$ curl http://192.168.59.103/
+$ curl http://127.0.0.1/
 ```
 
 When you stop the container you should get a HTTP 502.
@@ -64,10 +64,10 @@ This one should be automatically discovered by the nginx-consul-template contain
 Check if you can retrieve the hello-world page and you should see a different hostname for every request:
 
 ```
-$ curl http://192.168.59.103/
+$ curl http://127.0.0.1/
 ```
 
-Clean up a containers:
+Clean up containers:
 
  ```
  $ docker rm -f nginx nginx-consul-template hello-world
