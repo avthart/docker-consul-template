@@ -36,7 +36,7 @@ $ docker run \
  -v /Users/albertvth/Development/github/docker-consul-template/examples/nginx.ctml:/tmp/nginx.ctmpl \
  --volumes-from nginx \
  avthart/consul-template \
- -consul=127.0.0.1:8500 -wait=5s -template="/tmp/nginx.ctmpl:/etc/nginx/sites-available/default:/bin/docker kill -s HUP nginx"
+ -consul=127.0.0.1:8500 -wait=5s -template="/tmp/nginx.ctmpl:/etc/nginx/sites-available/default:docker kill -s HUP nginx"
  ```
 
  Start a hello-world container:
