@@ -1,7 +1,7 @@
 FROM docker:latest
 MAINTAINER Albert van t Hart <avthart@gmail.com>
 
-ENV CONSUL_TEMPLATE_VERSION 0.18.1
+ENV CONSUL_TEMPLATE_VERSION 0.19.5
 ENV DOCKER_HOST unix:///tmp/docker.sock
 
 ADD https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS /tmp/
